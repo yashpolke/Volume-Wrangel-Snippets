@@ -1,0 +1,31 @@
+( Declare density and temperature before )
+f@density = 0.0f;
+f@temperature = 0.0f;
+
+
+vector relVoxel = relbbox(0,v@P);
+int pc = pcopen(1,"P",v@P,(ch('voxel_size')/2.0)*1.4143,chi('max_points'));
+
+
+while (pciterate(pc)) {
+
+
+   vector point;
+   pcimport(pc,"P",point);
+   vector relPoint = relbbox(0,point);
+  
+   // only stamp points immediately in this voxel
+   if (int(relPoint.x * @resx) != int(relVoxel.x * @resx))
+       continue;
+   if (int(relPoint.y * @resy) != int(relVoxel.y * @resy))
+       continue;
+   if (int(relPoint.z * @resz) != int(relVoxel.z * @resz))
+       continue;
+      
+   float sample;
+   pcimport(pc,"temperature",sample);
+   f@temperature += sample;
+  
+   pcimport(pc,"density",sample);
+   f@density += sample;
+}
