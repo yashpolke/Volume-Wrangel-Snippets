@@ -1,0 +1,8 @@
+vector lineOfSight = point( 1, "P", i@ptnum );
+
+
+int handle = pcopen( 1, "P", v@P, chf( "radius" ), 1000 );
+float dist = pcimportbyidxf( handle, "point.distance", 0 );
+pcclose( handle );
+
+float condition = ( v@P.y  >= ( chf( "radius" )/ dist + chf( "falloff" ) ) ) ? ( f@density *= pow( clamp( f@density, 0.1,0.3 ) + pow( chf( "fade" ),chf( "exp_padding" ) ), chf( "exp" ) )) : ( f@density = f@density );
