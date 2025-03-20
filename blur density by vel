@@ -1,0 +1,17 @@
+float fps = 1.0/ch("fps");
+ 
+vector vel = volumesamplev(1, "vel", v@P);
+float steps = max(float(ch("steps")), 2);
+float d_mult = 1.0/steps;
+float s_mult = -d_mult*0.5;
+float sum = 0.0;
+int i;
+ 
+for(i=0; i<steps; ++i)
+{
+float d = volumesample(0, "density", v@P - vel*fps*ch("length")*s_mult);
+sum += d * d_mult;
+s_mult += d_mult;
+}
+ 
+f@density = sum;
